@@ -1,0 +1,36 @@
+name: VP Android APK
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'vp-android/**'
+      - '.github/workflows/vp-android.yml'
+permissions:
+  contents: write
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - uses: android-actions/setup-android@v3
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.9'
+      - name: Build debug APK
+        working-directory: vp-android
+        run: gradle :app:assembleDebug --no-daemon
+      - uses: actions/upload-artifact@v4
+        with:
+          name: VP-Calculator-APK
+          path: vp-android/app/build/outputs/apk/debug/app-debug.apk
+      - name: Publish APK release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          tag="vp-android-build-${GITHUB_RUN_NUMBER}"
+          gh release create "$tag" vp-android/app/build/outputs/apk/debug/app-debug.apk --title "VP 계산기 Android $tag" --notes "Android debug-signed APK. Install only if you trust this repository."
