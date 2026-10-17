@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/>
+<meta name="theme-color" content="#0c182d"/><meta name="description" content="산업환기 후드 종류별 필요환기량 계산기"/>
+<title>후드 필요환기량 계산기 | 산업환기 설계</title>
+<style>
+:root{font-family:system-ui,-apple-system,"Segoe UI","Noto Sans KR",sans-serif;color:#14253d;background:#f2f5fa;font-synthesis:none}*{box-sizing:border-box}body{margin:0}header{background:#0c182d;color:white;padding:26px max(20px,calc((100% - 1060px)/2)) 36px}header small{color:#85cfef;letter-spacing:.13em;font-weight:800}h1{font-size:clamp(25px,4vw,36px);letter-spacing:-.04em;margin:9px 0}header p{color:#c7d5e7;margin:0;font-size:14px}main{max-width:1060px;margin:-18px auto 50px;padding:0 16px;display:grid;grid-template-columns:minmax(0,1.25fr) minmax(300px,.85fr);gap:18px;align-items:start}.panel{background:white;border:1px solid #e1e7ef;border-radius:18px;padding:24px;box-shadow:0 8px 28px #172b480a}.panel h2{font-size:18px;margin:0 0 17px}.full{grid-column:1/-1}.tabs{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:17px}.tab{background:#eef3f8;border:1px solid transparent;border-radius:10px;padding:12px 6px;color:#37516b;font-weight:700;cursor:pointer}.tab[aria-pressed=true]{background:#e6f5ff;color:#076a9c;border-color:#74bfed}.subtypes{display:grid;grid-template-columns:repeat(2,1fr);gap:9px;margin-bottom:20px}.choice{display:flex;align-items:center;gap:7px;border:1px solid #dde7f1;padding:11px;border-radius:10px;font-size:13px;cursor:pointer}.choice:has(input:checked){border-color:#168dc7;background:#f0f9ff;color:#085d90}.choice input{accent-color:#168dc7}.shape-wrap{margin-bottom:18px}.shape-title{font-size:13px;font-weight:750;margin-bottom:8px}.shape-options{display:grid;grid-template-columns:repeat(2,1fr);gap:9px}.fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.field label{display:block;font-size:13px;font-weight:750;margin-bottom:7px}.field input{width:100%;border:1px solid #ccd8e4;border-radius:10px;padding:13px 12px;font-size:16px;background:#fff;color:#14253d}.field input:focus{outline:2px solid #7bc4ed;border-color:#2184bd}.field .hint{font-size:11px;color:#63768c;margin-top:5px}.field.wide{grid-column:1/-1}.result{background:linear-gradient(145deg,#15395c,#0c182d);color:white;border:none}.result h2{color:#d6eaf8}.eyebrow{font-size:13px;color:#addff6;margin-top:25px}.big{font-size:clamp(35px,4vw,48px);font-weight:850;letter-spacing:-.04em;margin:7px 0 5px;overflow-wrap:anywhere}.big small{font-size:16px;font-weight:500;color:#c5d8e7}.subresult{color:#a6defa;font-size:21px;font-weight:700}.formula{background:#ffffff16;padding:17px;border-radius:12px;margin:25px 0 14px}.formula .equation{font-size:19px;font-weight:750;overflow-wrap:anywhere;margin:7px 0}.formula small{color:#c5d7e7;line-height:1.7}.actions{display:flex;gap:9px;flex-wrap:wrap}.btn{border-radius:10px;padding:11px 14px;font-weight:750;cursor:pointer;border:1px solid #d2e0eb;background:white;color:#163550}.btn.primary{background:#44b7ec;border-color:#44b7ec;color:#051e31}.btn.secondary{background:transparent;color:white;border-color:#7791a7}.info{font-size:13px;line-height:1.8;color:#486079}.info strong{color:#18344f}.warn{border-left:3px solid #f2b95f;background:#fff8ea;padding:13px 15px;border-radius:4px;font-size:13px;line-height:1.7;color:#755113}.refs a{color:#1175ab;overflow-wrap:anywhere}.error{font-size:12px;color:#ffb9b9;min-height:18px;margin:9px 0}.hidden{display:none!important}.note{font-size:12px;color:#6c7d90;margin-top:10px}@media(max-width:760px){main{grid-template-columns:1fr}.panel{padding:20px}.result{grid-row:auto}.fields{grid-template-columns:1fr 1fr}}@media(max-width:400px){.fields,.subtypes{grid-template-columns:1fr}}@media print{header{background:white;color:black}main{display:block}.panel{box-shadow:none;margin:10px 0}.actions,.tabs,.subtypes{display:none}.result{background:white;color:black;border:1px solid #ccc}.result *{color:black!important}}
+</style>
+</head>
+<body>
+<header><small>INDUSTRIAL VENTILATION TOOL</small><h1>후드 필요환기량 계산기</h1><p>후드 형상과 제어속도에 따른 설계 환기량 산정 · SI 단위 지원</p></header>
+<main>
+<section class="panel"><h2>01 · 후드 종류 및 설계 조건</h2>
+<div class="tabs" role="group" aria-label="후드 종류"><button class="tab" data-type="booth" aria-pressed="true">부스식</button><button class="tab" data-type="exterior" aria-pressed="false">외부식</button><button class="tab" data-type="canopy" aria-pressed="false">캐노피식</button></div>
+<div id="subtypes" class="subtypes hidden" role="group" aria-label="외부식 세부 종류">
+<label class="choice"><input type="radio" name="ext" value="plain" checked>일반 개구형</label><label class="choice"><input type="radio" name="ext" value="flanged">플랜지 개구형</label><label class="choice"><input type="radio" name="ext" value="slot">일반 슬롯형</label><label class="choice"><input type="radio" name="ext" value="flangedSlot">플랜지 슬롯형</label></div>
+<div id="shapeSelector" class="shape-wrap"><div class="shape-title">개구부 / 발생원 형상</div><div class="shape-options" role="group" aria-label="원형 또는 사각형"><label class="choice"><input type="radio" name="shape" value="rectangle" checked>사각형</label><label class="choice"><input type="radio" name="shape" value="circle">원형</label></div></div>
+<div class="fields"><div class="field wide"><label for="velocity" id="velocityLabel">제어속도 V (m/s)</label><input id="velocity" type="number" min="0.001" step="any" value="0.5" inputmode="decimal"/><div class="hint" id="velocityHint">현장의 작업 조건에 맞게 직접 입력하세요. 권장값이 자동 적용되지는 않습니다.</div></div>
+<div class="field" id="wField"><label for="width">개구면 가로 W (m)</label><input id="width" type="number" min="0.001" step="any" value="1.2" inputmode="decimal"/></div>
+<div class="field" id="hField"><label for="height">개구면 세로 H (m)</label><input id="height" type="number" min="0.001" step="any" value="0.8" inputmode="decimal"/></div>
+<div class="field hidden" id="diameterField"><label for="diameter">지름 Ø (m)</label><input id="diameter" type="number" min="0.001" step="any" value="1.0" inputmode="decimal"/></div>
+<div class="field hidden" id="xField"><label for="distance">후드~발생원 거리 X (m)</label><input id="distance" type="number" min="0.001" step="any" value="0.3" inputmode="decimal"/></div>
+<div class="field hidden" id="lField"><label for="length">슬롯 길이 L (m)</label><input id="length" type="number" min="0.001" step="any" value="1.2" inputmode="decimal"/></div>
+<div class="field hidden" id="sField"><label for="slotWidth">슬롯 폭 W (m)</label><input id="slotWidth" type="number" min="0.001" step="any" value="0.1" inputmode="decimal"/></div>
+<div class="field hidden" id="pField"><label for="perimeter">발생원 둘레 P (m)</label><input id="perimeter" type="number" min="0.001" step="any" value="4" inputmode="decimal"/></div>
+<div class="field hidden" id="dField"><label for="canopyHeight">후드 높이 D (m)</label><input id="canopyHeight" type="number" min="0.001" step="any" value="0.6" inputmode="decimal"/></div></div>
+<p class="note" id="geometryNote">부스식의 개구면적 A = W × H</p><button class="btn" id="reset" type="button">입력값 초기화</button></section>
+<section class="panel result" aria-live="polite"><h2>02 · 계산 결과</h2><div class="eyebrow">필요환기량 Q</div><div class="big" id="hour">1,728 <small>m³/h</small></div><div class="subresult" id="minute">28.8 m³/min</div><div class="formula"><div>적용 공식</div><div class="equation" id="formula">Q = V × W × H</div><small id="substitution">0.5 × 1.2 × 0.8 × 3,600 = 1,728 m³/h</small></div><div class="error" id="error" role="alert"></div><div class="actions"><button type="button" class="btn primary" id="copy">결과 복사</button><button type="button" class="btn secondary" id="csv">CSV 저장</button><button type="button" class="btn secondary" onclick="window.print()">인쇄</button></div></section>
+<section class="panel full info"><h2>03 · 공식 안내 및 유의사항</h2><div id="explanation">부스식은 후드 개구면적에 평균 유입속도를 곱합니다. Q = V × W × H.</div><p class="warn"><strong>설계 유의:</strong> 결과는 후드의 이론적 요구 풍량 추정값입니다. 실제 설계에는 유해물질 특성, 발생 강도, 외란 기류, 제어속도 선정, 덕트 반송속도, 압력손실, 정압 및 송풍기 성능 검증 등이 별도로 필요합니다. 공식의 경험적 적용범위를 벗어나면 오차가 커질 수 있습니다.</p><p class="refs"><strong>공식 근거:</strong> ACGIH, <em>Industrial Ventilation: A Manual of Recommended Practice</em>, Figure 3-11 (1998년 공개본). <a href="https://law.resource.org/pub/us/cfr/ibr/001/acgih.manual.1998.pdf" target="_blank" rel="noopener noreferrer">후드 유형별 원문 PDF</a><br>AIHA <a href="https://www.aiha.org/ih-calculator-app/calcs/plain-opening-flow-rate.html" target="_blank" rel="noopener noreferrer">일반 개구형 계산식</a> 및 <a href="https://www.aiha.org/ih-calculator-app/calcs/canopy-flow-rate.html" target="_blank" rel="noopener noreferrer">캐노피식 계산식</a>.</p><p class="note">단위: V(m/s), 길이(m), Q(m³/s). m³/h는 ×3,600, m³/min는 ×60으로 환산합니다. 캐노피식의 V는 발생원과 후드 사이 유입영역의 평균속도입니다. 원형 개구면적은 πd²/4, 사각형 개구면적은 W×H입니다. 캐노피식의 발생원 둘레는 원형 πd, 사각형 2(W+H)입니다. 슬롯형에서 W/L ≤ 0.2 조건을 확인하세요.</p></section>
+</main>
+<script>
+(()=>{'use strict';let type='booth';const $=id=>document.getElementById(id),fmt=x=>new Intl.NumberFormat('ko-KR',{maximumFractionDigits:2}).format(x),get=id=>Number($(id).value),visible=(id,show)=>$(id).classList.toggle('hidden',!show);let last=null;
+function update(){
+const ext=type==='exterior',sub=document.querySelector('input[name=ext]:checked').value,slot=ext&&(sub==='slot'||sub==='flangedSlot'),open=ext&&!slot,can=type==='canopy';
+const shape=document.querySelector('input[name=shape]:checked').value,circle=shape==='circle',usesShape=!slot;
+visible('subtypes',ext);visible('shapeSelector',usesShape);
+visible('wField',usesShape&&!circle);visible('hField',usesShape&&!circle);visible('diameterField',usesShape&&circle);
+visible('xField',ext);visible('lField',slot);visible('sField',slot);visible('pField',false);visible('dField',can);
+$('wField').querySelector('label').textContent=can?'발생원 가로 W (m)':'개구면 가로 W (m)';
+$('hField').querySelector('label').textContent=can?'발생원 세로 H (m)':'개구면 세로 H (m)';
+$('diameterField').querySelector('label').textContent=can?'발생원 지름 Ø (m)':'개구면 지름 Ø (m)';
+$('velocityLabel').textContent=can?'유입영역 평균속도 V (m/s)':'제어속도 V (m/s)';
+$('velocityHint').textContent='작업 조건에 따라 적정 속도를 정해야 합니다. 현재 값은 예시 입력값입니다.';
+let ids=['velocity'];if(usesShape)ids.push(...(circle?['diameter']:['width','height']));if(ext)ids.push('distance');if(slot)ids.push('length','slotWidth');if(can)ids.push('canopyHeight');
+const bad=ids.some(id=>!Number.isFinite(get(id))||get(id)<=0||$(id).value.trim()==='');
+let warning='';if(slot&&get('slotWidth')/get('length')>0.2)warning='슬롯 형상 조건(W/L ≤ 0.2)을 만족하지 않습니다. 다른 형상을 선택하거나 값을 조정하세요.';
+if(bad)warning='사용하는 모든 입력값에 0보다 큰 숫자를 입력하세요.';
+let q=NaN,formula='',details='',note='',name='';
+const v=get('velocity'),w=get('width'),h=get('height'),dia=get('diameter'),x=get('distance'),l=get('length');
+const area=circle?Math.PI*dia*dia/4:w*h, perimeter=circle?Math.PI*dia:2*(w+h), shapeName=circle?'원형':'사각형';
+const areaExpr=circle?'π × Ø² / 4':'W × H', perimeterExpr=circle?'π × Ø':'2 × (W + H)';
+if(!bad&&!warning){
+if(type==='booth'){
+q=v*area;formula=`Q = V × A,  A = ${areaExpr}`;
+details=`${v} × ${fmt(area)} × 3,600`;
+note=`${shapeName} 부스식: 개구면적 A = ${fmt(area)} m², 유입속도 V를 곱해 환기량을 산정합니다.`;name=`부스식 (${shapeName})`;
+}else if(can){
+q=1.4*perimeter*v*get('canopyHeight');formula=`Q = 1.4 × P × V × D,  P = ${perimeterExpr}`;
+details=`1.4 × ${fmt(perimeter)} × ${v} × ${get('canopyHeight')} × 3,600`;
+note=`${shapeName} 캐노피식: 발생원 둘레 P = ${fmt(perimeter)} m (${perimeterExpr}), D는 발생원에서 후드까지의 수직거리입니다. 고온 플룸은 별도 검토가 필요합니다.`;name=`캐노피식 (${shapeName})`;
+}else if(slot){
+const factor=sub==='slot'?3.7:2.6;q=factor*l*v*x;formula=`Q = ${factor} × L × V × X`;
+details=`${factor} × ${l} × ${v} × ${x} × 3,600`;
+note=`${sub==='slot'?'일반':'플랜지'} 슬롯형: 슬롯 길이 L과 발생원 거리 X를 사용합니다. 슬롯 폭/길이 비 W/L ≤ 0.2에서 적용합니다.`;name=sub==='slot'?'일반 슬롯형':'플랜지 슬롯형';
+}else{
+const factor=sub==='plain'?1:0.75;q=factor*v*(10*x*x+area);formula=`Q = ${factor===1?'':'0.75 × '}V × (10X² + A),  A = ${areaExpr}`;
+details=`${factor} × ${v} × (10 × ${x}² + ${fmt(area)}) × 3,600`;
+note=`${shapeName} ${sub==='plain'?'일반':'플랜지'} 개구형: A = ${fmt(area)} m², X는 제어지점과 개구면 사이의 거리입니다. 이 공식은 원형 또는 거의 정사각형인 개구에 주로 적용되므로, 길쭉한 사각형에서는 적용성을 확인해야 합니다.`;name=`${sub==='plain'?'일반':'플랜지'} 개구형 (${shapeName})`;
+}}
+$('geometryNote').textContent=slot?'슬롯 조건: W/L ≤ 0.2 (원형·사각형 형상 선택은 슬롯형에 적용하지 않음)':can?`발생원 둘레 P = ${perimeterExpr}. 후드 자체의 둘레가 아닌 발생원 둘레를 사용합니다.`:`개구면적 A = ${areaExpr}. 원형은 지름, 사각형은 가로·세로를 입력하세요.`;
+$('explanation').textContent=note||'적용 조건을 확인한 후 수치를 입력하세요.';
+$('formula').textContent=formula||'—';$('error').textContent=warning;
+if(Number.isFinite(q)&&!warning){
+$('hour').innerHTML=`${fmt(q*3600)} <small>m³/h</small>`;$('minute').textContent=`${fmt(q*60)} m³/min`;
+$('substitution').textContent=`${details} = ${fmt(q*3600)} m³/h`;
+last={name,q,formula,details,inputs:ids.map(id=>[id,$(id).value]),shape:slot?'슬롯형':shapeName,area:!slot&&!can?area:null,perimeter:can?perimeter:null};
+}else{$('hour').innerHTML='— <small>m³/h</small>';$('minute').textContent='— m³/min';$('substitution').textContent='입력값을 확인하세요.';last=null;}
+}
+function summary(){if(!last)return '';return `[후드 필요환기량 계산]\n후드: ${last.name}\n형상: ${last.shape}\n공식: ${last.formula}\n계산: ${last.details}\n필요환기량: ${fmt(last.q*3600)} m³/h (${fmt(last.q*60)} m³/min)\n※ 실제 설계 전 적용조건 검증 필요`;}
+document.querySelectorAll('.tab').forEach(b=>b.addEventListener('click',()=>{type=b.dataset.type;document.querySelectorAll('.tab').forEach(t=>t.setAttribute('aria-pressed',String(t===b)));update();}));document.querySelectorAll('input').forEach(i=>i.addEventListener('input',update));document.querySelectorAll('input[name=ext]').forEach(i=>i.addEventListener('change',update));$('reset').addEventListener('click',()=>{const defs={velocity:0.5,width:1.2,height:0.8,distance:0.3,length:1.2,slotWidth:0.1,perimeter:4,diameter:1.0,canopyHeight:0.6};for(const [id,val] of Object.entries(defs))$(id).value=val;update();});$('copy').addEventListener('click',async()=>{if(!last)return;try{await navigator.clipboard.writeText(summary());$('copy').textContent='복사됨';setTimeout(()=>$('copy').textContent='결과 복사',1800);}catch{window.prompt('복사할 내용',summary());}});$('csv').addEventListener('click',()=>{if(!last)return;const rows=[['항목','값'],['후드 종류',last.name],['개구부/발생원 형상',last.shape],...last.inputs.map(([k,v])=>[k,v]),['공식',last.formula],['필요환기량(m³/h)',(last.q*3600).toFixed(3)],['필요환기량(m³/min)',(last.q*60).toFixed(3)]];const csv='\ufeff'+rows.map(r=>r.map(x=>'"'+String(x).replace(/"/g,'""')+'"').join(',')).join('\r\n');const url=URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8;'})),a=document.createElement('a');a.href=url;a.download='후드_필요환기량_계산.csv';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);});update();})();
+</script>
+</body></html>
