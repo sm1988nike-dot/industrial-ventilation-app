@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#102239"><meta name="description" content="후드 필요환기량과 상용 원형덕트 최대 허용 크기를 계산합니다">
+<title>후드·덕트 MAX 크기 계산기</title>
+<style>
+:root{font-family:system-ui,-apple-system,"Segoe UI","Noto Sans KR",sans-serif;color:#182e45;background:#f2f5f9}*{box-sizing:border-box}body{margin:0}header{padding:30px max(20px,calc((100% - 1020px)/2)) 52px;background:#102239;color:white}header small{color:#70cef0;font-weight:800;letter-spacing:.11em}h1{margin:8px 0;font-size:clamp(24px,4vw,34px)}header p{margin:0;color:#bfccda;font-size:14px;line-height:1.65}main{max-width:1020px;margin:-25px auto 50px;padding:0 16px;display:grid;grid-template-columns:1fr 1fr;gap:18px;align-items:start}.card{background:white;padding:24px;border:1px solid #dde5ee;border-radius:18px;box-shadow:0 8px 26px #172b480a}.wide{grid-column:1/-1}.card h2{font-size:18px;margin:0 0 17px}.fields{display:grid;grid-template-columns:1fr 1fr;gap:14px}.field label{display:block;font-weight:700;font-size:13px;margin-bottom:7px}.field input{width:100%;background:white;border:1px solid #bdccda;border-radius:10px;padding:13px;font-size:17px;color:#10243a}.field input:focus{outline:2px solid #87d0f4}.span2{grid-column:1/-1}.hint{font-size:12px;color:#718195;margin-top:6px}.metrics{display:grid;grid-template-columns:1fr 1fr;gap:11px}.metric{background:#f2f6fa;padding:15px;border-radius:12px}.metric small{font-size:12px;color:#587087}.metric strong{display:block;font-size:clamp(21px,3vw,26px);margin-top:5px;letter-spacing:-.03em}.metric em{font-size:12px;font-style:normal;font-weight:400;color:#61778a}.hero{border:1px solid #a7d9c1;background:#effaf4;padding:18px;border-radius:15px;margin-top:14px}.hero .tag{color:#127049;font-size:12px;font-weight:800}.hero .size{font-size:36px;color:#0d5e42;font-weight:850;margin:8px 0}.hero p{margin:6px 0;font-size:14px}.status{font-size:13px;font-weight:700;color:#16754d}.error{color:#aa3247;font-size:13px;line-height:1.5}.formula{font-size:14px;background:#f3f6fa;border-radius:10px;padding:14px;line-height:1.9}.muted{color:#64788a;font-size:13px;line-height:1.75}button{cursor:pointer;border-radius:10px;font-size:14px;font-weight:750;padding:11px 14px;border:1px solid #bfccdd;background:#fff;color:#133a5d}.primary{background:#1478b4;color:white;border-color:#1478b4}.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}.actions button{flex:1}.table-wrap{overflow:auto;max-height:480px;border:1px solid #e2e9f0;border-radius:12px}table{width:100%;border-collapse:collapse;font-size:13px}th,td{padding:12px 11px;text-align:right;white-space:nowrap;border-bottom:1px solid #e7edf3}th:first-child,td:first-child{text-align:left}th{position:sticky;top:0;background:#edf3f8}tr.best{background:#e3f7eb;font-weight:800}tr.bad{color:#aa3f4a}svg{width:100%;max-width:260px;height:190px;display:block;margin:auto}.nav{display:inline-block;margin-top:12px;color:#8ed4f5;font-size:13px}.notice{padding:13px 16px;background:#fff7e9;color:#82551b;border-radius:10px;font-size:12px;line-height:1.8}@media(max-width:720px){main{grid-template-columns:1fr}.wide{grid-column:auto}.card{padding:18px}}@media print{header{background:#fff;color:#111;padding:12px}header p,.nav,.actions{display:none}main{display:block;margin:0}.card{box-shadow:none;break-inside:avoid;margin-bottom:12px}.table-wrap{max-height:none}}
+</style></head><body>
+<header><small>INDUSTRIAL VENTILATION</small><h1>후드 · 덕트 MAX 크기 계산기</h1><p>포집 풍량 계산부터 이론상 최대 직경, 상용 원형덕트 선정, 실제 반송속도 검증까지</p><a class="nav" href="./index.html">← 기존 후드 환기량 계산기로 이동</a></header>
+<main>
+<section class="card"><h2>01 · 설계 조건 입력</h2><div class="fields">
+<div class="field"><label for="w">후드 가로 W (cm)</label><input id="w" type="number" value="40" min="0" step="any"></div>
+<div class="field"><label for="h">후드 세로 H (cm)</label><input id="h" type="number" value="20" min="0" step="any"></div>
+<div class="field"><label for="x">포집거리 X (cm)</label><input id="x" type="number" value="20" min="0" step="any"></div>
+<div class="field"><label for="vc">제어속도 Vc (m/s)</label><input id="vc" type="number" value="0.5" min="0" step="any"></div>
+<div class="field span2"><label for="vd">최소 덕트 반송속도 Vd (m/s)</label><input id="vd" type="number" value="5" min="0" step="any"></div>
+</div><p class="hint">가정: 플랜지가 없는 외부식 포집후드, 사각형 개구부 / 원형 연결덕트</p>
+<div class="actions"><button id="reset" type="button">예제값 복원</button></div>
+</section>
+<section class="card" aria-live="polite"><h2>02 · 계산 및 추천 결과</h2><div id="result"></div></section>
+<section class="card wide"><h2>03 · 덕트 규격별 풍속 비교</h2><p class="muted">사용자가 제공한 인치/mm 규격표의 24개 값을 사용합니다. 선정 기준: 최소 반송속도 이상을 유지하는 가장 큰 표준 직경.</p>
+<div class="table-wrap"><table><thead><tr><th>인치</th><th>직경(mm)</th><th>실제 풍속(m/s)</th><th>판정</th></tr></thead><tbody id="standards"></tbody></table></div></section>
+<section class="card wide"><h2>04 · 계산 공식 및 전제</h2>
+<div class="formula">개구부 면적 A<sub>h</sub> = (W / 100) × (H / 100) [m²]<br>
+필요 풍량 Q = 60 × Vc × (10X² + A<sub>h</sub>) [m³/min], X는 m<br>
+최대 덕트 단면적 A<sub>max</sub> = Q / (60 × Vd) [m²]<br>
+이론상 최대 원형 직경 D<sub>ideal</sub> = 1000 × √(4 A<sub>max</sub> / π) [mm]<br>
+선정 규격 = 상용 규격 중 D ≤ D<sub>ideal</sub>인 최대값<br>
+실제 속도 V = Q / (60 × π × (D/1000)² / 4) [m/s]</div>
+<p class="notice">주의: 이 계산은 플랜지가 없는 외부식 후드에 대한 경험식을 사용한 개략 설계용입니다. 후드 형태·포집 환경·압력손실·소음·입자 특성·덕트 내경에 따라 재검토가 필요합니다. 제공된 표의 mm 수치를 실제 유효 내경으로 가정합니다. 750mm를 초과하는 규격은 목록에 없습니다.</p>
+</section></main>
+<script>
+"use strict";
+const SIZES=[["3/8",10],["1/2",15],["3/4",20],["1",25],["1 1/4",32],["1 1/2",40],["2",50],["2 1/2",65],["3",80],["3 1/2",90],["4",100],["5",125],["6",150],["8",200],["10",250],["12",300],["14",350],["16",400],["18",450],["20",500],["22",550],["24",600],["26",650],["30",750]];
+const ids=["w","h","x","vc","vd"];const el=id=>document.getElementById(id);
+const f=(n,d=2)=>Number.isFinite(n)?n.toLocaleString("ko-KR",{maximumFractionDigits:d,minimumFractionDigits:d}):"—";
+let last=null;
+function calc(){
+ const raw=ids.map(id=>el(id).value.trim());const vals=raw.map(Number);
+ const valid=raw.every(s=>s!=="")&&vals.every((v,i)=>Number.isFinite(v)&&(i===2?v>=0:v>0));
+ if(!valid){el("result").innerHTML='<p class="error">가로·세로·속도는 0보다 크게, 포집거리는 0 이상으로 입력하세요.</p>';el("standards").innerHTML="";last=null;return}
+ const [w,h,x,vc,vd]=vals;const hoodArea=w*h/10000;
+ const Q=60*vc*(10*(x/100)**2+hoodArea);
+ const aMax=Q/(60*vd);const ideal=Math.sqrt(4*aMax/Math.PI)*1000;
+ const eligible=SIZES.filter(s=>s[1]<=ideal+1e-9);
+ const best=eligible.at(-1)||null;
+ const actual=best?Q/(60*Math.PI*(best[1]/1000)**2/4):null;
+ last={Q,vd,hoodArea,aMax,ideal,best,actual,vals};
+ const hero=best?'<div class="hero"><div class="tag">추천 상용 원형덕트 · 최대 허용 규격</div><div class="size">Ø '+best[1]+' mm</div><p>'+best[0]+' inch · 실제 반송속도 <b>'+f(actual)+' m/s</b></p><div class="status">✓ 최소 반송속도 '+f(vd)+' m/s 충족</div><svg viewBox="0 0 260 190" role="img" aria-label="원형 덕트 단면"><circle cx="130" cy="85" r="67" stroke="#2186bc" stroke-width="3" fill="#b7e0f5" fill-opacity=".65"/><path d="M63 85 H197 M63 76 V94 M197 76 V94" stroke="#176da4" stroke-width="2"/><text x="130" y="72" text-anchor="middle" font-size="15" font-weight="700" fill="#173750">Ø '+best[1]+' mm</text><text x="130" y="178" text-anchor="middle" font-size="12" fill="#526879">선정 덕트 단면</text></svg></div>':
+ '<div class="notice">조건에 맞는 규격이 없습니다. 이론상 최대 직경이 표의 최소 규격 Ø10mm보다 작습니다.</div>';
+ el("result").innerHTML='<div class="metrics"><div class="metric"><small>① 필요환기량 Q</small><strong>'+f(Q)+' <em>m³/min</em></strong></div><div class="metric"><small>② 이론상 최대 직경</small><strong>Ø '+f(ideal,1)+' <em>mm</em></strong></div><div class="metric"><small>후드 개구부 면적</small><strong>'+f(hoodArea,4)+' <em>m²</em></strong></div><div class="metric"><small>최대 허용 덕트 단면적</small><strong>'+f(aMax,5)+' <em>m²</em></strong></div></div>'+hero+'<div class="actions"><button id="copy" class="primary">계산 결과 복사</button><button id="print">인쇄 / PDF</button></div>';
+ el("copy").addEventListener("click",copyResult);el("print").addEventListener("click",()=>window.print());
+ el("standards").innerHTML=SIZES.map(s=>{const diameter=s[1];const v=Q/(60*Math.PI*(diameter/1000)**2/4);const good=diameter<=ideal+1e-9;const isBest=best&&diameter===best[1];return '<tr class="'+(isBest?'best':good?'':'bad')+'"><td>'+s[0]+'</td><td>'+diameter+'</td><td>'+f(v)+'</td><td>'+(isBest?'추천':good?'적합':'부적합')+'</td></tr>'}).join("");
+}
+function copyResult(){if(!last)return;const r=last;const text=['후드 및 MAX 덕트 선정','후드 가로/세로: '+r.vals[0]+' × '+r.vals[1]+' cm','포집거리 X: '+r.vals[2]+' cm','제어속도: '+r.vals[3]+' m/s','최소 덕트속도: '+r.vd+' m/s','필요환기량 Q: '+f(r.Q)+' m³/min','이론상 최대 직경: '+f(r.ideal,1)+' mm','상용덕트: '+(r.best?'Ø'+r.best[1]+' mm ('+r.best[0]+' inch)':'해당 없음'),'실제 반송속도: '+(r.actual?f(r.actual)+' m/s':'—')].join('\n');if(navigator.clipboard&&window.isSecureContext){navigator.clipboard.writeText(text).then(()=>alert("결과를 복사했습니다.")).catch(()=>prompt("아래 내용을 복사하세요.",text))}else prompt("아래 내용을 복사하세요.",text)}
+ids.forEach(id=>el(id).addEventListener("input",calc));
+el("reset").addEventListener("click",()=>{["40","20","20","0.5","5"].forEach((v,i)=>el(ids[i]).value=v);calc()});calc();
+</script></body></html>
